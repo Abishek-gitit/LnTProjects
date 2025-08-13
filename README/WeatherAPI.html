@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #4facfe, #00f2fe);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 100px;
+        }
+        input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 250px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background: #0078ff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #005fcc;
+        }
+        .weather {
+            margin-top: 30px;
+            display: none;
+        }
+        .weather img {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌦 Weather App</h1>
+        <input type="text" id="cityInput" placeholder="Enter city name">
+        <button onclick="getWeather()">Search</button>
+        <div class="weather" id="weatherBox">
+            <h2 id="cityName"></h2>
+            <img id="weatherIcon" alt="Weather Icon">
+            <p id="temperature"></p>
+            <p id="description"></p>
+        </div>
+    </div>
+    <script>
+        async function getWeather() {
+            const city = document.getElementById('cityInput').value;
+            const apiKey = "c3391a7ef3a165e68accf3a26d78ce56";
+            const url = ⁠ https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric ⁠;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("City not found");
+                const data = await response.json();
+                document.getElementById('cityName').textContent = ⁠ ${data.name}, ${data.sys.country} ⁠;
+                document.getElementById('temperature').textContent = ⁠ 🌡 ${data.main.temp}°C ⁠;
+                document.getElementById('description').textContent = ⁠ 📝 ${data.weather[0].description} ⁠;
+                document.getElementById('weatherIcon').src = ⁠ https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png ⁠;
+                document.getElementById('weatherBox').style.display = "block";
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+    </script>
+</body>
+</html>
